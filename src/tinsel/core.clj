@@ -24,7 +24,7 @@
         (recur (rest exprs) (trace-fn expr n-expr form)))
       `(binding [*trace* (atom [])] [~form @*trace*]))))
 
-(defmacro =>>
+(defmacro =>
   [x & exprs]
   (trace x exprs
          (fn [expr n-expr x]
