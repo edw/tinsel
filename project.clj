@@ -1,4 +1,4 @@
-(defproject tinsel "0.1.0-SNAPSHOT"
+(defproject edw/tinsel "0.1.0-SNAPSHOT"
   :description "Tinsel: shiny threading macros with tracing"
   :url "http://github.com/edw/tinsel"
   :license {:name "Eclipse Public License"
