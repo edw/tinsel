@@ -24,14 +24,16 @@
         (recur (rest exprs) (trace-fn expr n-expr form)))
       `(binding [*trace* (atom [])] [~form @*trace*]))))
 
-(defmacro => [x & exprs]
+(defmacro =>>
+  [x & exprs]
   (trace x exprs
          (fn [expr n-expr x]
            `(let [x# (~(first n-expr) ~x ~@(rest n-expr))]
               (swap! *trace* conj [(quote ~expr) x#])
               x#))))
 
-(defmacro =>> [x & exprs]
+(defmacro =>>
+  [x & exprs]
   (trace x exprs
          (fn [expr n-expr x]
            `(let [x# (~@n-expr ~x)]
