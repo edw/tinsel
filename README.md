@@ -1,6 +1,6 @@
 # tinsel
 
-A Clojure library designed to ... well, that part is up to you.
+Tinsel: shiny threading macros with tracing.
 
 ## Installation
 
