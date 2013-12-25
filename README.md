@@ -7,7 +7,7 @@ Tinsel: shiny threading macros with tracing.
 Add this dependency to your `project.clj`:
 
 ```
-[edw/tinsel "0.1.0"
+[edw/tinsel "0.2.0"
 ```
 
 ## Usage
