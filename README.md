@@ -68,7 +68,7 @@ As for integers, they work similarly to keywords, selecting the item
 at the given index. I implemented this feature after deciding against
 doing so because retrieving a particular item in a vector is not
 possible to do elegantly as an item in a `->>` (or `=>>`) form,
-because `get` takes the collection as its final argument. So, `(=>>
+because `get` takes the collection as its first argument. So, `(=>>
 [:a :b :c] 2)` evaluates to `[:c [[[:a :b :c] [:a :b :c]] [2 :c]]]`
 i.e. `:c` plus the trace.
 
