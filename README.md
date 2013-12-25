@@ -2,6 +2,8 @@
 
 Tinsel: shiny threading macros with tracing.
 
+Why the name? [Because](http://doc.poseur.com/xmas-eve-macros).
+
 ## Installation
 
 Add this dependency to your `project.clj`:
