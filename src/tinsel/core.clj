@@ -2,7 +2,9 @@
 
 (defn- normalize
   [expr]
-  (cond (keyword? expr)
+  (cond (integer? expr)
+        `((fn [x#] (get x# ~expr)))
+        (keyword? expr)
         (list expr)
         (symbol? expr)
         (list expr)

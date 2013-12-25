@@ -9,7 +9,7 @@ Why the name? [Because](http://doc.poseur.com/xmas-eve-macros).
 Add this dependency to your `project.clj`:
 
 ```clojure
-[edw/tinsel "0.2.0"]
+[edw/tinsel "0.2.1"]
 ```
 
 ## Usage
@@ -55,7 +55,7 @@ Produced this output?
 
 By the way, tinsel supports raw function names, sugared anonymous
 functions e.g. `#(- % 1)`, "regular" anonymous functions using the
-`fn` special form, or keywords. As an example of the last, `(let
+`fn` special form, integers, and keywords. As an example of the last, `(let
 [m {:a 42}] (=> m :a))` evaluates to:
 
 ```clojure
@@ -64,9 +64,13 @@ functions e.g. `#(- % 1)`, "regular" anonymous functions using the
   [:a 42]]]
 ```
 
-That is all for now. I've considered implementing integers, a la
-keywords, asbe accessors, but I didn't want to stray too far from
-standard-issue Clojure conventions.
+As for integers, they work similarly to keywords, selecting the item
+at the given index. I implemented this feature after deciding against
+doing so because retrieving a particular item in a vector is not
+possible to do elegantly as an item in a `->>` (or `=>>`) form,
+because `get` takes the collection as its final argument. So, `(=>>
+[:a :b :c] 2)` evaluates to `[:c [[[:a :b :c] [:a :b :c]] [2 :c]]]`
+i.e. `:c` plus the trace.
 
 ## License
 
