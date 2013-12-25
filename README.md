@@ -9,7 +9,7 @@ Why the name? [Because](http://doc.poseur.com/xmas-eve-macros).
 Add this dependency to your `project.clj`:
 
 ```clojure
-[edw/tinsel "0.2.1"]
+[edw/tinsel "0.3.0"]
 ```
 
 ## Usage
