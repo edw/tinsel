@@ -1,7 +1,5 @@
 (ns tinsel.core)
 
-(def ^:dynamic *trace* nil)
-
 (defn- normalize
   [expr]
   (cond (keyword? expr)
@@ -14,28 +12,23 @@
         :else
         expr))
 
-(defn- trace
-  [x exprs trace-fn]
-  (loop [exprs exprs
-         form `(do (swap! *trace* conj ['~x ~x]) ~x)]
-    (if (seq exprs)
-      (let [expr (first exprs)
-            n-expr (normalize expr)]
-        (recur (rest exprs) (trace-fn expr n-expr form)))
-      `(binding [*trace* (atom [])] [~form @*trace*]))))
+(defn- splice> [expr] `(fn [x#] (~(first expr) x# ~@(rest expr))))
+(defn- splice>> [expr ]`(fn [x#] (~@expr x#)))
 
-(defmacro =>
-  [x & exprs]
-  (trace x exprs
-         (fn [expr n-expr x]
-           `(let [x# (~(first n-expr) ~x ~@(rest n-expr))]
-              (swap! *trace* conj [(quote ~expr) x#])
-              x#))))
+(defn- thread-forms [splicer x exprs]
+  (let [innermost-form `(let [x# ~x
+                              log# [['~x ~x]]]
+                          [x# log#])]
+    (->> (map normalize exprs)
+         (interleave exprs)
+         (partition 2)
+         (reduce
+          (fn [inner-form [raw-expr norm-expr]]
+            `(let [[x1# log1#] ~inner-form
+                   x2# (~(splicer norm-expr) x1#)
+                   log2# (conj log1# ['~raw-expr x2#])]
+               [x2# log2#]))
+          innermost-form))))
 
-(defmacro =>>
-  [x & exprs]
-  (trace x exprs
-         (fn [expr n-expr x]
-           `(let [x# (~@n-expr ~x)]
-              (swap! *trace* conj [(quote ~expr) x#])
-              x#))))
+(defmacro => [x & exprs] (thread-forms splice> x exprs))
+(defmacro =>> [x & exprs] (thread-forms splice>> x exprs))
