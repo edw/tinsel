@@ -1,8 +1,7 @@
-# tinsel
+# Tinsel
 
-Tinsel: shiny threading macros with tracing.
-
-Why the name? [Because](http://doc.poseur.com/xmas-eve-macros).
+Shiny threading macros with tracing. Why the name?
+[Because](http://doc.poseur.com/xmas-eve-macros).
 
 ## Installation
 
