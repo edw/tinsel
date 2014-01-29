@@ -5,11 +5,9 @@ Shiny threading macros with tracing. Why the name?
 
 ## Installation
 
-Add this dependency to your `project.clj`:
+Artifacts are published on [Clojars][1]. 
 
-```clojure
-[edw/tinsel "0.3.0"]
-```
+![latest version][2]
 
 ## Usage
 
@@ -77,3 +75,6 @@ Copyright © 2013 Edwin Watkeys
 
 Distributed under the Eclipse Public License either version 1.0 or (at
 your option) any later version.
+
+[1]: https://clojars.org/edw/tinsel
+[2]: https://clojars.org/edw/tinsel/latest-version.svg
