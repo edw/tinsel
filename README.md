@@ -1,7 +1,7 @@
 # Tinsel
 
 Shiny threading macros with tracing. Why the name?
-[Because](http://doc.poseur.com/xmas-eve-macros).
+[Because](http://poseur.com/xmas-eve-macros).
 
 ## Installation
 
