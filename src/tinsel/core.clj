@@ -36,7 +36,6 @@
 (defmacro => [x & exprs] (thread-forms splice> x exprs))
 (defmacro =>> [x & exprs] (thread-forms splice>> x exprs))
 
-
 (let [lock (Object.)]
   (defn default-debug-printf-fn
     [fmt & args]
@@ -49,20 +48,23 @@
 (defn debugf [fmt & args]
   (apply *debug-printf-fn* fmt args))
 
+(defn print-trace
+  [label trace]
+  (debugf "DEBUG >>> %s\n%sDEBUG <<< %s\n"
+          label
+          (with-out-str (pprint trace))
+          label))
+
+(defmacro __>
+  [op label x exprs]
+  `(let [[result# trace#] (~op ~x ~@exprs)]
+     (print-trace ~label trace#)
+     result#))
+
 (defmacro _>
   [label x & exprs]
-  `(let [[result# trace#] (=> ~x ~@exprs)]
-     (debugf "DEBUG >>> %s\n%sDEBUG <<< %s\n"
-             ~label
-             (with-out-str (pprint trace#))
-             ~label)
-     result#))
+  `(__> => ~label ~x ~exprs))
 
 (defmacro _>>
   [label x & exprs]
-  `(let [[result# trace#] (=>> ~x ~@exprs)]
-     (debugf "DEBUG >>> %s\n%s\nDEBUG <<< %s\n"
-             ~label
-             (with-out-str (pprint trace#))
-             ~label)
-     result#))
+  `(__> =>> ~label ~x ~exprs))
