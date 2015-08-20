@@ -1,4 +1,5 @@
-(ns tinsel.core)
+(ns tinsel.core
+  (:require [clojure.pprint :refer [pprint]]))
 
 (defn- normalize
   [expr]
@@ -34,3 +35,34 @@
 
 (defmacro => [x & exprs] (thread-forms splice> x exprs))
 (defmacro =>> [x & exprs] (thread-forms splice>> x exprs))
+
+
+(let [lock (Object.)]
+  (defn default-debug-printf-fn
+    [fmt & args]
+    (binding [*out* *err*]
+      (locking lock
+        (apply printf fmt args)))))
+
+(def ^:dynamic *debug-printf-fn* default-debug-printf-fn)
+
+(defn debugf [fmt & args]
+  (apply *debug-printf-fn* fmt args))
+
+(defmacro _>
+  [label x & exprs]
+  `(let [[result# trace#] (=> ~x ~@exprs)]
+     (debugf "DEBUG >>> %s\n%sDEBUG <<< %s\n"
+             ~label
+             (with-out-str (pprint trace#))
+             ~label)
+     result#))
+
+(defmacro _>>
+  [label x & exprs]
+  `(let [[result# trace#] (=>> ~x ~@exprs)]
+     (debugf "DEBUG >>> %s\n%s\nDEBUG <<< %s\n"
+             ~label
+             (with-out-str (pprint trace#))
+             ~label)
+     result#))
